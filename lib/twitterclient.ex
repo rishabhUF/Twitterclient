@@ -18,26 +18,29 @@ defmodule Twitterclient do
     :global.registered_names
     pid = :global.whereis_name(:mainserver)
    pid
-  IO.puts "global registered"
-  username = "ris"
-  password = "r"
-  user = %User{username: username |> String.to_atom, password: password, online: true}
-  GenServer.cast(pid,{:register,user})  
+  IO.puts "global registered" 
 
 
   end
 
 def register(username,password \\"") do
+    pid = :global.whereis_name(:mainserver)
     IO.puts "#{username}"
     user = %User{username: username |> String.to_atom, password: password, online: true}
-    GenServer.cast(Twi, {:register, user})
+    GenServer.cast(pid, {:register, user})
 end
-  def get_server_ip_address() do
-    {:ok, ifs} = :inet.getif()
+
+def login(username,password) do
+  pid = :global.whereis_name(:mainserver)
+  reply = GenServer.call(pid,{:login,username,password})
+end
+
+def get_server_ip_address() do
+  {:ok, ifs} = :inet.getif()
     {a,b,c,d} =
-        Enum.filter(ifs , fn({{ip, _, _, _} , _t, _net_mask}) -> ip != 127 end)
-        |> Enum.map(fn {ip, _broadaddr, _mask} -> ip end)
-        |>List.last
+      Enum.filter(ifs , fn({{ip, _, _, _} , _t, _net_mask}) -> ip != 127 end)
+      |> Enum.map(fn {ip, _broadaddr, _mask} -> ip end)
+      |>List.last
     "#{a}.#{b}.#{c}.#{d}"        
   end       
 end
