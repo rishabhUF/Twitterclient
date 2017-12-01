@@ -1,0 +1,8 @@
+iex -S mix
+
+Twitterclient.main()
+
+Twitterclient.register("Gaurav","password")
+Twitterclient.register("Rishabh","password")
+
+Twitterclient.login("Gaurav","password")
