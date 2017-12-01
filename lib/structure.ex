@@ -12,6 +12,10 @@ defmodule Twi.Server do
               hashtags: %{} ## map of hashtag -> list[tweet]
     end
 
+# defmodule Twi.Instance do
+#         defstruct loggedInUser: nil
+#                   #hashtags: %{} ## map of hashtag -> list[tweet]
+#         end
 # defmodule Twi.Tweet do
 #     defstruct tweet_id: nil,
 #               tweet_text: nil,

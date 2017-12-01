@@ -2,6 +2,7 @@ defmodule Twitterclient do
   use GenServer
   alias Twi.User
   alias Twi.Server
+  alias Twi.Instance
 
   def main do
     ip=get_server_ip_address()
@@ -33,7 +34,20 @@ end
 def login(username,password) do
   pid = :global.whereis_name(:mainserver)
   reply = GenServer.call(pid,{:login,username,password})
+  
 end
+
+def add_tweet(username,tweet) do
+  pid = :global.whereis_name(:mainserver)
+  #reply = GenServer.call(pid,{:login,username,password})
+  reply =  GenServer.call(pid,{:find_add_tweet,username,tweet})  
+end
+
+def follow(username,to_follow) do
+  pid= :global.whereis_name(:mainserver)
+  reply = GenServer.call(pid,{:follow_user,username,to_follow})
+end
+
 
 def get_server_ip_address() do
   {:ok, ifs} = :inet.getif()
