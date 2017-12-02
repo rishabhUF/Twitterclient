@@ -48,6 +48,10 @@ def follow(username,to_follow) do
   reply = GenServer.call(pid,{:follow_user,username,to_follow})
 end
 
+def retweet(username,tweet) do
+  pid= :global.whereis_name(:mainserver)
+  reply = GenServer.call(pid,{:retweet,username,tweet})
+end
 
 def get_server_ip_address() do
   {:ok, ifs} = :inet.getif()
