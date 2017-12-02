@@ -6,10 +6,10 @@ Twitterclient.register("Gaurav","password")
 Twitterclient.register("Rishabh","password")
 Twitterclient.register("Math","password")
 Twitterclient.follow("Gaurav","Rishabh")
-
+Twitterclient.follow("Rishabh","Gaurav")
 Twitterclient.follow("Math","Gaurav")
 
-##Twitterclient.login("Gaurav","password")
+Twitterclient.login("Gaurav","password")
 
 Twitterclient.add_tweet("Math","#Hello India asjhbajsdh #asdkjah")
 
@@ -19,9 +19,25 @@ Twitterclient.retweet("Gaurav","#asda #Hello")
 
 Twitterclient.add_tweet("Gaurav","#asda Hello")
 
-
-Twitterclient.follow("Rishabh","Gaurav")
-
-
 Twitterclient.add_tweet("Gaurav","#asda Hello")
 Twitterclient.add_tweet("Gaurav","#asda Hello @Rishabh @Math")
+Twitterclient.add_tweet("Gaurav","#asda  @Rishabh @Math")
+Twitterclient.add_tweet("Gaurav","#asda  @Gaurav @Math")
+
+Twitterclient.fetch_mention("Gaurav")
+Twitterclient.fetch_mention("Math")
+Twitterclient.fetch_hashtags("#Hello")
+Twitterclient.fetch_hashtags("#asda")
+Twitterclient.fetch_userHomepage("Gaurav")
+Twitterclient.fetch_userHomepage("Math")
+Twitterclient.fetch_userHomepage("Rishabh")
+
+Twitterclient.logout("Gaurav")
+
+
+Twitterclient.login("Gaurav","passwordasd")
+Twitterclient.login("Gaurasdsav","passwordasd")
+
+Twitterclient.login("Gaurav","password")
+
+
