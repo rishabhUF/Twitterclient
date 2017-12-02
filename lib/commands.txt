@@ -1,6 +1,6 @@
 iex -S mix
 
-Twitterclient.main()
+Twitterclient.main(["100"])
 
 Twitterclient.register("Gaurav","password")
 Twitterclient.register("Rishabh","password")

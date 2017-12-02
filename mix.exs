@@ -6,9 +6,13 @@ defmodule Twitterclient.Mixfile do
       app: :twitterclient,
       version: "0.1.0",
       elixir: "~> 1.5",
+      escript: escript(),
       start_permanent: Mix.env == :prod,
       deps: deps()
     ]
+  end
+  def escript do
+    [main_module: Twitterclient]
   end
 
   # Run "mix help compile.app" to learn about applications.
