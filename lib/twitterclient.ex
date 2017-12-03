@@ -10,7 +10,7 @@ defmodule Twitterclient do
   # ________________________________________________
   def main(args) do
     if List.first(args) == "" do
-      IO.puts "Please enter the arguments"
+      IO.puts "Running with the simulator on, please enter the no. of users you want to simulate."
     else
 
       numberOfUsers = args |> Enum.at(0) |> String.to_integer
@@ -19,7 +19,7 @@ defmodule Twitterclient do
       Node.set_cookie(:"client@#{ip}", :"twiserver")
       GenServer.start_link(Twitterclient, [], name: Client)
       case Node.connect(:"rishabh@#{ip}") do
-        true -> IO.puts "here"
+        true -> IO.puts "Connection to Main Server Established"
         reason ->
           IO.puts "Could not connect to server, reason: #{reason}"
           System.halt(0)    
@@ -28,8 +28,7 @@ defmodule Twitterclient do
       :global.registered_names
       pid = :global.whereis_name(:mainserver)
       pid
-      IO.puts "global registered"
-
+      
       ## Simulate Register users
       factor1_=numberOfUsers
       startTime = System.os_time()
@@ -42,8 +41,8 @@ defmodule Twitterclient do
 
       # Simulate Active users following activity
       rangeFactor1_=numberOfUsers*0.4 |> round
-      rangeFactor2_=numberOfUsers*0.6 |> round
-      factor1_=100
+      rangeFactor2_=numberOfUsers*0.599999 |> round
+      factor1_=100 #no. of followers
       startTime = System.os_time()
       for y <-rangeFactor1_..rangeFactor2_ do
         for x <- 0..factor1_ do
@@ -54,32 +53,40 @@ defmodule Twitterclient do
       totalTime = endtime - startTime
       range_=rangeFactor2_-rangeFactor1_
       combinations_=range_*factor1_
-      IO.puts "#{range_} Users interacting in #{combinations_} combinations : followed in Time : #{totalTime} microseconds"
+      IO.puts "#{range_} Active Users- Each user is following #{factor1_} other users, which is #{combinations_} combinations : Total time taken: #{totalTime} microseconds"
 
 
       # Simulate Passive users following activity
       rangeFactor1_=1
-      rangeFactor2_=numberOfUsers*0.39 |> round
-      factor1_=70
+      rangeFactor2_=numberOfUsers*0.39999 |> round
+      rangeFactor3_=numberOfUsers*0.6|> round
+      rangeFactor4_=numberOfUsers*0.99999 |> round
+      factor1_=30 #no. of followers for group1 
+      factor2_=5 #no. of followers for group2
       startTime = System.os_time()
       for y <-rangeFactor1_..rangeFactor2_ do
         for x <- 0..factor1_ do
           follow("#{x}","#{y}")
         end
       end
+      for y <-rangeFactor3_..rangeFactor4_ do
+        for x <- 0..factor2_ do
+          follow("#{x}","#{y}")
+        end
+      end
       endtime = System.os_time()
       totalTime = endtime - startTime
-      range_=rangeFactor2_-rangeFactor1_
-      combinations_=range_*factor1_
-      IO.puts "#{range_} Users interacting in #{combinations_} combinations : followed in Time : #{totalTime} microseconds"
-    
-
-
+      range1_=(rangeFactor2_-rangeFactor1_) 
+      range2_=(rangeFactor4_-rangeFactor3_)
+      range_=range1_+range2_
+      combinations_=range1_*factor1_+range2_*factor2_
+      IO.puts "#{range_} Passive Users- following #{factor1_} or #{factor2_} other users, which is #{combinations_} combinations : Total time taken: #{totalTime} microseconds"
+      
       #Simulate tweets for active users
       rangeFactor1_=numberOfUsers*0.4 |> round
-      rangeFactor2_=numberOfUsers*0.6 |> round
-      factor1_=200
-      factor2_=100
+      rangeFactor2_=numberOfUsers*0.599999 |> round
+      factor1_=30 #Number of tweets
+      factor2_=100 #number of followers
 
       startTime = System.os_time()
       for y <-rangeFactor1_..rangeFactor2_ do
@@ -91,26 +98,36 @@ defmodule Twitterclient do
       totalTime = endtime - startTime
       range_=rangeFactor2_-rangeFactor1_
       combinations_=range_*factor1_*factor2_
-      IO.puts "#{range_} Users sending tweets in #{combinations_} combinations : followed in Time : #{totalTime} microseconds"
+      IO.puts "#{range_} Users Each sending #{factor1_} tweets to #{factor2_} other users,  which is #{combinations_} combinations : followed in Time : #{totalTime} microseconds"
     
       #Simulate tweets for passive users
       rangeFactor1_=1
-      rangeFactor2_=numberOfUsers*0.39 |> round
-      factor1_=10
-      factor2_=70
-
+      rangeFactor2_=numberOfUsers*0.39999 |> round
+      rangeFactor3_=numberOfUsers*0.6|> round
+      rangeFactor4_=numberOfUsers*0.99999 |> round
+      factor1_=8 #no. of tweets by each user for group1 
+      factor2_=2 #no. of tweets by each user for group2
+      factor3_=30 #no. of followers for group1
+      factor4_=5 #no. of followers for group2
       startTime = System.os_time()
       for y <-rangeFactor1_..rangeFactor2_ do
         for x <- 0..factor1_ do
           add_tweet("#{y}","#{y} Sent a tweet number #{x}")
         end
       end
+      for y <-rangeFactor3_..rangeFactor4_ do
+        for x <- 0..factor2_ do
+          add_tweet("#{y}","#{y} Sent a tweet number #{x}")
+        end
+      end
       endtime = System.os_time()
       totalTime = endtime - startTime
-      range_=rangeFactor2_-rangeFactor1_
-      combinations_=range_*factor1_*factor2_
-      IO.puts "#{range_} Users sending tweets in #{combinations_} combinations : followed in Time : #{totalTime} microseconds"
-    
+      range1_=(rangeFactor2_-rangeFactor1_) 
+      range2_=(rangeFactor4_-rangeFactor3_)
+      range_=range1_+range2_
+      combinations_=(range1_*factor1_*factor3_)+(range2_*factor2_*factor4_)
+      IO.puts "#{range_} Passive Users- sending #{factor1_} or #{factor2_} tweets to #{factor3_} or #{factor4_} other users, which is #{combinations_} combinations : Total time taken: #{totalTime} microseconds"
+      
     end
   end
 
